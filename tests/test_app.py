@@ -11,12 +11,10 @@ def test_get_emoji(web_client):
     assert response.data.decode("utf-8") == ":)"
 
 
-
 """
 Test calling POST
 Should see new album in the list
 """
-
 def test_post_albums(db_connection, web_client):
     db_connection.seed("seeds/music_library.sql")
     post_response = web_client.post("/albums", data={
@@ -51,10 +49,19 @@ def test_post_albums(db_connection, web_client):
 # """
 
 """
-Test getting all albums
+Test posting album with no data
 """
 
+def test_post_album_with_no_data(db_connection, web_client):
+    db_connection.seed("seeds/music_library.sql")
+    post_response = web_client.post("/albums")
+    assert post_response.status_code == 400
+    assert post_response.data.decode('utf-8') == "Necessary album data expected"
 
+
+"""
+Test getting all albums
+"""
 def test_get_albums(db_connection, web_client):
     db_connection.seed("seeds/music_library.sql")
     get_response = web_client.get("/albums")
