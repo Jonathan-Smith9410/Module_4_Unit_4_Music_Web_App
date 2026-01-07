@@ -80,4 +80,16 @@ def test_get_albums(db_connection, web_client):
         "Album(11, Fodder on My Wings, 1982, 4)\n" \
         "Album(12, Ring Ring, 1973, 2)"
 
+
+
+"""
+When I call GET /artists I see a list of artists
+"""
+
+def test_get_artists(db_connection, web_client):
+    db_connection.seed("seeds/music_library.sql")
+    get_response = web_client.get("/artists")
+    assert get_response.status_code == 200
+    assert get_response.data.decode('utf-8') == "Pixies, ABBA, Taylor Swift, Nina Simone"
+
 # === End Example Code ===

@@ -3,6 +3,7 @@ from flask import Flask, request
 from lib.database_connection import get_flask_database_connection
 from lib.album_repository import AlbumRepository
 from lib.album import Album
+from lib.artist_repository import ArtistRepository
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -33,6 +34,14 @@ def get_albums():
     return "\n".join(
         f"{album}" for album in albums
     )
+
+
+@app.route('/artists', methods=["GET"])
+def get_artists():
+    connection = get_flask_database_connection(app)
+    repository = ArtistRepository(connection)
+    artists = repository.get_artists_as_string()
+    return artists
 
 # == Example Code Below ==
 
