@@ -4,6 +4,7 @@ from lib.database_connection import get_flask_database_connection
 from lib.album_repository import AlbumRepository
 from lib.album import Album
 from lib.artist_repository import ArtistRepository
+from lib.artist import *
 
 # Create a new Flask app
 app = Flask(__name__)
@@ -42,6 +43,19 @@ def get_artists():
     repository = ArtistRepository(connection)
     artists = repository.get_artists_as_string()
     return artists
+
+@app.route('/artists', methods=["POST"])
+def post_artist():
+    if 'name' not in request.form or 'genre' not in request.form:
+        return "You need to submit a name and genre", 400
+    connection = get_flask_database_connection(app)
+    repository = ArtistRepository(connection)
+    artist = Artist(
+        None,
+        request.form['name'],
+        request.form['genre'])
+    repository.create(artist)
+    return "", 200
 
 # == Example Code Below ==
 

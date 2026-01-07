@@ -12,6 +12,11 @@ _Include the HTTP method, the path, and any query or body parameters._
 GET /artists
   name: string
   genre: string
+
+POST /artists
+  PARAMETERS:
+  name: string
+  genre: string
 ```
 
 ## 2. Create Examples as Tests
@@ -23,10 +28,39 @@ _Remember to try out different parameter values._
 _Include the status code and the response body._
 
 ```python
-
+# SCENARIO 1
 
 # GET /artists
 #  Expected response (200 OK):
+"""
+Pixies, ABBA, Taylor Swift, Nina Simone
+"""
+
+# SCENARIO 2
+
+# POST /artists
+  # name:"Wild nothing"
+  # genre: "Indie"
+#  Expected response (200 OK):
+"""
+""" (No content)
+
+# GET /artists
+# #  Expected response (200 OK):
+"""
+Pixies, ABBA, Taylor Swift, Nina Simone, Wild nothing
+"""
+
+# SCENARIO 3
+
+# POST /artists
+#  Expected response (400 Bad Request):
+"""
+You need to submit a name and genre
+"""
+
+# GET /artists
+# #  Expected response (200 OK):
 """
 Pixies, ABBA, Taylor Swift, Nina Simone
 """

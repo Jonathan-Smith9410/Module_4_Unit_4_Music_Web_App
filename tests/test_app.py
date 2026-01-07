@@ -92,4 +92,37 @@ def test_get_artists(db_connection, web_client):
     assert get_response.status_code == 200
     assert get_response.data.decode('utf-8') == "Pixies, ABBA, Taylor Swift, Nina Simone"
 
+"""
+When I call POST /artists with the info
+I see the band in the list when I call GET /artists
+"""
+def test_post_artists(db_connection, web_client):
+    db_connection.seed("seeds/music_library.sql")
+    post_response = web_client.post("/artists", data={
+        'name': "Wild nothing",
+        'genre': "Indie"
+    })
+    assert post_response.status_code == 200
+    assert post_response.data.decode('utf-8') == ""
+
+    get_response = web_client.get("/artists")
+    assert get_response.status_code == 200
+    assert get_response.data.decode('utf-8') == "Pixies, ABBA, Taylor Swift, Nina Simone, Wild nothing"
+
+"""
+When I call POST /artists with no info
+I receive an error message:
+You need to submit a name and genre
+"""
+
+def test_post_artists_with_no_info(db_connection, web_client):
+    db_connection.seed("seeds/music_library.sql")
+    post_response = web_client.post("/artists")
+    assert post_response.status_code == 400
+    assert post_response.data.decode('utf-8') == "You need to submit a name and genre"
+
+    get_response = web_client.get("/artists")
+    assert get_response.status_code == 200
+    assert get_response.data.decode('utf-8') == "Pixies, ABBA, Taylor Swift, Nina Simone"
+
 # === End Example Code ===

@@ -19,3 +19,7 @@ class ArtistRepository:
             item = row["name"]
             artist_names.append(item)
         return ", ".join(artist_names)
+    
+    def create(self, artist):
+        self._connection.execute('INSERT INTO artists (name, genre) VALUES (%s, %s)', [artist.name, artist.genre])
+        return None
